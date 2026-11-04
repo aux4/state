@@ -18,8 +18,9 @@ jobs:
           echo "::add-mask::$TOKEN"
           export TOKEN
           python3 - <<'PYTHON'
-          import os, json, base64
-          payload=json.loads(base64.urlsafe_b64decode(os.environ['TOKEN'].split('.')[1]+'==='))
+          import os, json, urllib.request
+          request=urllib.request.Request('https://sso.aux4.io/userinfo', headers={'Authorization': 'Bearer '+os.environ['TOKEN']})
+          with urllib.request.urlopen(request) as response: payload=json.load(response)
           scopes=payload.get('scopes', [])
           if isinstance(scopes, str): scopes=scopes.split()
           print('Authorized publishing scopes:', ', '.join(scopes))
