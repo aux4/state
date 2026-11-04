@@ -1,0 +1,37 @@
+version: 1
+providers:
+  stripe:
+    package: aux4/state-stripe
+    config:
+      apiKeyEnv: ${var.stripeKeyEnv}
+      mode: ${var.stripeMode}
+resources:
+  pro:
+    type: stripe/product
+    properties:
+      name: "${var.productName}"
+      description: Pro subscription
+      metadata:
+        team: billing
+      images:
+        - https://example.com/pro.png
+      marketing_features:
+        - name: Unlimited projects
+  proMonthly:
+    type: stripe/price
+    properties:
+      product: ${resources.pro.id}
+      currency: usd
+      unit_amount: "${var.monthlyAmount}"
+      recurring:
+        interval: month
+      lookup_key: pro_monthly
+  proYearly:
+    type: stripe/price
+    properties:
+      product: ${resources.pro.id}
+      currency: usd
+      unit_amount: "${var.yearlyAmount}"
+      recurring:
+        interval: year
+      lookup_key: pro_yearly

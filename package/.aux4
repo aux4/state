@@ -1,0 +1,309 @@
+{
+  "scope": "aux4",
+  "name": "state",
+  "version": "0.1.0",
+  "description": "Declarative resources with environment isolation and pluggable providers",
+  "license": "MIT",
+  "tags": [
+    "state",
+    "resources",
+    "declarative"
+  ],
+  "system": [
+    [
+      "test:node --version",
+      "brew:node",
+      "apt:nodejs",
+      "dnf:nodejs",
+      "apk:nodejs"
+    ]
+  ],
+  "dependencies": [
+    "aux4/config"
+  ],
+  "profiles": [
+    {
+      "name": "main",
+      "commands": [
+        {
+          "name": "state",
+          "execute": [
+            "profile:state"
+          ],
+          "help": {
+            "text": "Manage declarative resources"
+          }
+        }
+      ]
+    },
+    {
+      "name": "state",
+      "commands": [
+        {
+          "name": "validate",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs validate values(dir, environment, stateDir, recursive, variables, format)"
+          ],
+          "help": {
+            "text": "Validate definitions and provider schemas",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              }
+            ]
+          }
+        },
+        {
+          "name": "plan",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs plan values(dir, environment, stateDir, recursive, variables, format)"
+          ],
+          "help": {
+            "text": "Preview resource changes without writing",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              }
+            ]
+          }
+        },
+        {
+          "name": "apply",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs apply values(dir, environment, stateDir, recursive, variables, format, yes)"
+          ],
+          "help": {
+            "text": "Reconcile resources with their definitions",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              },
+              {
+                "name": "yes",
+                "text": "Apply the displayed plan without an interactive prompt",
+                "default": "false"
+              }
+            ]
+          }
+        },
+        {
+          "name": "destroy",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs destroy values(dir, environment, stateDir, recursive, variables, format, yes)"
+          ],
+          "help": {
+            "text": "Destroy resources managed in this environment",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              },
+              {
+                "name": "yes",
+                "text": "Apply the displayed plan without an interactive prompt",
+                "default": "false"
+              }
+            ]
+          }
+        },
+        {
+          "name": "inspect",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs inspect values(dir, environment, stateDir, recursive, variables, format)"
+          ],
+          "help": {
+            "text": "Show the saved state for this environment",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              }
+            ]
+          }
+        },
+        {
+          "name": "import",
+          "execute": [
+            "node ${packageDir}/lib/state.mjs import values(dir, environment, stateDir, recursive, variables, format, resource, id)"
+          ],
+          "help": {
+            "text": "Adopt an existing resource without changing it",
+            "variables": [
+              {
+                "name": "dir",
+                "text": "Directory containing .state.yaml and .state.yml files",
+                "default": "."
+              },
+              {
+                "name": "environment",
+                "text": "Isolated environment name",
+                "default": "default"
+              },
+              {
+                "name": "stateDir",
+                "text": "State directory, relative to dir",
+                "default": ".aux4-state"
+              },
+              {
+                "name": "recursive",
+                "text": "Discover definitions in subdirectories",
+                "default": "false"
+              },
+              {
+                "name": "variables",
+                "text": "Values for ${var.name} references",
+                "default": "{}"
+              },
+              {
+                "name": "format",
+                "text": "Output format: text or json",
+                "default": "text"
+              },
+              {
+                "name": "resource",
+                "text": "Resource name in the definitions"
+              },
+              {
+                "name": "id",
+                "text": "Existing remote resource ID"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

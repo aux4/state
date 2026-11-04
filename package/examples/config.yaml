@@ -1,0 +1,25 @@
+config:
+  dev:
+    environment: dev
+    variables:
+      stripeKeyEnv: STRIPE_DEV_API_KEY
+      stripeMode: test
+      productName: Pro Development
+      monthlyAmount: 500
+      yearlyAmount: 5000
+  staging:
+    environment: staging
+    variables:
+      stripeKeyEnv: STRIPE_STAGING_API_KEY
+      stripeMode: test
+      productName: Pro Staging
+      monthlyAmount: 1000
+      yearlyAmount: 10000
+  prod:
+    environment: prod
+    variables:
+      stripeKeyEnv: STRIPE_PROD_API_KEY
+      stripeMode: live
+      productName: Pro
+      monthlyAmount: 2000
+      yearlyAmount: 20000
