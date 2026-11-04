@@ -1,0 +1,30 @@
+name: Configure Stripe publisher
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure authorized publisher credentials
+        env:
+          CLIENT_ID: ${{ secrets.AUX4_PUBLISHER_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AUX4_PUBLISHER_CLIENT_SECRET }}
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          set -euo pipefail
+          TOKEN=$(curl --fail --silent --show-error --user "$CLIENT_ID:$CLIENT_SECRET" --data grant_type=client_credentials https://sso.aux4.io/token | jq -er '.access_token')
+          echo "::add-mask::$TOKEN"
+          export TOKEN
+          python3 - <<'PYTHON'
+          import os, json, base64
+          payload=json.loads(base64.urlsafe_b64decode(os.environ['TOKEN'].split('.')[1]+'==='))
+          scopes=payload.get('scopes', [])
+          if isinstance(scopes, str): scopes=scopes.split()
+          print('Authorized publishing scopes:', ', '.join(scopes))
+          if 'community' not in scopes:
+              raise SystemExit('Publisher client is not authorized for the community scope')
+          PYTHON
+          printf '%s' "$CLIENT_ID" | gh secret set AUX4_PUBLISHER_CLIENT_ID --repo aux4-community/stripe
+          printf '%s' "$CLIENT_SECRET" | gh secret set AUX4_PUBLISHER_CLIENT_SECRET --repo aux4-community/stripe
