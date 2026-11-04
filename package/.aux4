@@ -1,7 +1,7 @@
 {
   "scope": "aux4",
   "name": "state",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Declarative resources with environment isolation and pluggable providers",
   "license": "MIT",
   "tags": [
